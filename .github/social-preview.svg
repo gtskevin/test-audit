@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <style>
+      @media (prefers-color-scheme: dark) {
+        .bg { fill: #0f172a; }
+        .title { fill: #f1f5f9; }
+        .subtitle { fill: #94a3b8; }
+        .bar { fill: #3b82f6; }
+        .accent-bar { fill: #10b981; }
+        .tag-bg { fill: #1e293b; }
+        .tag-text { fill: #60a5fa; }
+      }
+    </style>
+  </defs>
+  <rect class="bg" width="1200" height="630" fill="#0f172a"/>
+  <rect x="100" y="160" width="1000" height="4" rx="2" fill="#1e293b"/>
+  <text x="600" y="250" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="72" font-weight="bold" class="title" fill="#f1f5f9">Test Audit</text>
+  <text x="600" y="330" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="28" class="subtitle" fill="#94a3b8">AI writes code fast. But it doesn't write tests.</text>
+  <rect x="370" y="380" width="160" height="44" rx="22" class="tag-bg" fill="#1e293b"/>
+  <text x="450" y="408" text-anchor="middle" font-family="monospace" font-size="18" class="tag-text" fill="#60a5fa">/test-audit</text>
+  <rect x="560" y="380" width="180" height="44" rx="22" class="tag-bg" fill="#1e293b"/>
+  <text x="650" y="408" text-anchor="middle" font-family="system-ui" font-size="18" fill="#34d399">Zero interaction</text>
+  <rect x="770" y="380" width="160" height="44" rx="22" class="tag-bg" fill="#1e293b"/>
+  <text x="850" y="408" text-anchor="middle" font-family="system-ui" font-size="18" fill="#f59e0b">Finds bugs</text>
+  <rect x="140" y="490" width="24" height="70" rx="4" fill="#3b82f6" opacity="0.8"/>
+  <rect x="180" y="520" width="24" height="40" rx="4" fill="#3b82f6" opacity="0.6"/>
+  <rect x="220" y="500" width="24" height="60" rx="4" fill="#3b82f6" opacity="0.7"/>
+  <rect x="260" y="490" width="24" height="70" rx="4" fill="#3b82f6" opacity="0.8"/>
+  <rect x="300" y="530" width="24" height="30" rx="4" fill="#10b981" opacity="0.8"/>
+  <text x="600" y="540" text-anchor="middle" font-family="system-ui" font-size="16" fill="#475569">Claude Code Skill — Works with any AI coding agent</text>
+</svg>
