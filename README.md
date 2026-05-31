@@ -2,8 +2,9 @@
 
 # Test Audit
 
-**AI writes code fast. But it doesn't write tests.**<br/>
-Test Audit fills the gap — automatically.
+**You don't know what to test. This skill does.**
+
+The test judgment a senior developer has — available to everyone.
 
 [![Claude Code Skill](https://img.shields.io/badge/Claude%20Code-Skill-blue?logo=anthropic)]()
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)]()
@@ -13,59 +14,46 @@ Test Audit fills the gap — automatically.
 
 ---
 
-<div align="center">
+> [!NOTE]
+> **Who is this for?** You build things with AI coding agents. You're not sure when code needs tests, what kind of tests, or how many. Test-audit makes those decisions for you — then writes and runs the tests.
+
+## The Gap This Fills
+
+There are plenty of testing tools. But they all assume you already know **what to test**:
+
+| Tool | What it does | What it assumes |
+|------|-------------|-----------------|
+| **TDD skills** | Enforces "write test first" process | You know WHAT to test and HOW DEEP |
+| **Coverage tools** | Measures % of lines covered | You interpret the number yourself |
+| **"Write tests for X"** | Generates tests for a specific file | You chose the file and scope |
+| **Copilot test gen** | Suggests tests for your current file | You know which file matters |
+
+**Test-audit is different.** It answers the question you can't: *given these code changes, what actually needs testing?*
 
 ```
-  You run /test-audit
-          │
-          ▼
-  ┌─────────────────────────────┐
-  │  Step 1: Locate Changes     │  git diff (uncommitted/staged/last commit)
-  └─────────────┬───────────────┘
-                ▼
-  ┌─────────────────────────────┐
-  │  Step 2: Warmup             │  Read conftest, existing tests, DB patterns
-  │                             │  ⚡ Prevents 80% of repeat failures
-  └─────────────┬───────────────┘
-                ▼
-  ┌─────────────────────────────┐
-  │  Step 3: Coverage Analysis  │  What's already tested? What's missing?
-  └─────────────┬───────────────┘
-                ▼
-  ┌─────────────────────────────┐
-  │  Step 4: Write Tests        │  Reuse project patterns & helpers
-  └─────────────┬───────────────┘
-                ▼
-  ┌─────────────────────────────┐
-  │  Step 5: Run & Converge     │  Max 2 retries. Bug? Record & continue.
-  └─────────────┬───────────────┘
-                ▼
-  ┌─────────────────────────────┐
-  │  ✅ Ready to commit?        │
-  │  Files reviewed: N          │
-  │  Tests added: N             │
-  │  Bugs found: 0 / list       │
-  └─────────────────────────────┘
-```
+A senior developer looks at your diff and thinks:
+  "Type definitions? → Skip."
+  "Auth routes? → High risk. Test every path."
+  "Helper function? → Happy path + one edge case."
+  "Database query? → Test with isolation."
 
-</div>
+Test-audit encodes this judgment.
+```
 
 ## ✨ Highlights
 
-- **Fully autonomous** — Analyzes changes, writes tests, runs them, reports. Zero interaction.
-- **Finds real bugs** — Not just test gaps. Found 3 production bugs in its first project (route ordering, missing table, missing column).
+- **Makes test decisions for you** — Reads your diff, decides which files need tests, what type, and how deep. Zero input required.
+- **Finds real bugs, not just coverage gaps** — Found 3 production bugs in its first project (route ordering, missing table, missing column).
 - **Respects your project** — Reads your conftest, reuses your helpers, follows your patterns. Never introduces new dependencies.
-- **Converges, doesn't retry** — 2-retry limit forces understanding over blind repetition. The key innovation.
+- **Converges, doesn't retry** — 2-retry limit forces understanding over blind repetition.
 
-## 🎯 Example Prompts
+## 🎯 Who Uses This
 
-> Copy any of these into your AI coding agent and see test-audit in action:
+**The vibe coder** — You build with AI agents but aren't a professional developer. You don't have the "test intuition" that comes from years of shipping. Test-audit gives you that intuition.
 
-| Trigger | What Happens |
-|---------|-------------|
-| `/test-audit` | Full autonomous audit: locate changes → analyze → write → run → report |
-| "check tests before I commit" | Scans uncommitted changes, fills coverage gaps |
-| "add tests for the new API endpoints" | Writes targeted tests for changed files |
+**The solo developer shipping fast** — You know testing matters but don't have time to think about coverage strategy. Run `/test-audit` before each commit as a safety net.
+
+**The team lead reviewing PRs** — Use test-audit to quickly assess whether a PR has adequate test coverage without reading every line.
 
 ## 📦 Installation
 
@@ -87,71 +75,137 @@ cp test-audit/skill.md ~/.claude/skills/test-audit/skill.md
 
 ```
 📁 Files reviewed: 5
+   → 2 files skipped (type definitions, constants)
+   → 3 files need testing
 🧪 Tests added: 12 (3 new test files)
 ✅ Result: ALL PASS
 🐛 Bugs found: 1 (route ordering in analyses.py)
-→ Can commit? Fix the bug first, then YES
+   → Scanned similar routes: 2 more issues found
+→ Can commit? Fix the bugs first, then YES
 ```
 
-## 🆚 Why This Is Different
+## 🆚 How It's Different
 
-| Typical "write tests" prompt | test-audit |
-|------------------------------|------------|
-| You decide what to test | AI analyzes changes and decides |
-| Tests may not match project style | Reads conftest + existing tests first |
-| Repeated failures → keep retrying | 2-retry limit, then stop and re-understand |
-| One file at a time | Full diff scan, prioritize by risk |
-| Only finds test gaps | Also finds **bugs in production code** |
-| Needs back-and-forth with you | Zero interaction until the final report |
+### vs. TDD Skills
+
+TDD says "write the test first." But **which test?** Testing an auth route needs per-path coverage. Testing a helper function needs one happy path. How do you know? Experience.
+
+Test-audit **has that experience built in.** It reads the code and makes the judgment call — so you don't need years of practice to know what "good testing" looks like.
+
+### vs. "Write tests for X"
+
+When you say "write tests for auth.py," you've already made the decision that auth.py needs tests. But what if the real risk is in a helper that auth.py calls? Or what if auth.py already has great coverage, but a new migration file broke the schema?
+
+Test-audit scans **your entire diff**, not just one file you pointed at.
+
+### vs. Coverage Reports
+
+Coverage says "87% of lines are executed." It doesn't tell you:
+- Whether the 13% gap matters
+- Whether the 87% tests are actually asserting anything meaningful
+- Whether a file with 100% coverage is testing the right things
+
+Test-audit makes **qualitative** judgments, not just quantitative.
 
 ## 📖 How It Works
 
-### The Warmup Step (Secret Weapon)
+<div align="center">
 
-Before writing any tests, test-audit spends 2 minutes reading your project's test infrastructure:
+```
+  You run /test-audit
+          │
+          ▼
+  ┌─────────────────────────────┐
+  │  Step 1: Locate Changes     │  git diff — what changed?
+  └─────────────┬───────────────┘
+                ▼
+  ┌─────────────────────────────┐
+  │  Step 2: Judge Each File    │  ← The core value
+  │                             │
+  │  Worth testing? → Skip or   │
+  │  What type?      → Decide   │
+  │  How deep?       → Commit   │
+  └─────────────┬───────────────┘
+                ▼
+  ┌─────────────────────────────┐
+  │  Step 3: Read the Room      │  conftest, existing tests, DB patterns
+  │                             │  ⚡ Prevents 80% of environment failures
+  └─────────────┬───────────────┘
+                ▼
+  ┌─────────────────────────────┐
+  │  Step 4: Write & Run Tests  │  Reuse project patterns & helpers
+  └─────────────┬───────────────┘
+                ▼
+  ┌─────────────────────────────┐
+  │  Step 5: Converge           │  Max 2 retries per file.
+  │                             │  Same error twice? Re-understand.
+  │                             │  Bug found? Record + scan for similar.
+  └─────────────┬───────────────┘
+                ▼
+  ┌─────────────────────────────┐
+  │  ✅ Can I commit?           │
+  │  Judgment + Results + Bugs  │
+  └─────────────────────────────┘
+```
 
-1. **`conftest.py`** — Finds and reuses your helpers (`make_test_client`, `register_and_login`, `seed_data`)
-2. **An existing test file** — Learns your patterns: how DBs are created, how mocking is done
-3. **A simple existing test is run** — Confirms the test environment actually works
+</div>
 
-This prevents 80% of "wrong environment" failures that plague AI-generated tests.
+### The Judgment Engine (Core Value)
 
-### The 2-Retry Rule (Key Innovation)
+For each changed file, test-audit makes three decisions that experienced developers make instinctively:
+
+**1. Is this file worth testing?**
+```
+Type definitions, constants, pure CSS     → Not worth it
+Helper functions, simple data transforms   → Probably worth it
+API endpoints, database operations, auth   → Definitely worth it
+```
+
+**2. What type of test?**
+```
+Pure logic function    → Unit test
+API route with auth    → Integration test via TestClient
+React component        → Test the logic, skip the rendering if deps are heavy
+Database query         → Test with real DB, not mocks
+```
+
+**3. How deep?**
+```
+Auth/permissions/data isolation   → Every path: happy + unauthorized + edge cases
+Simple helper                     → Happy path + one boundary value
+Complex state machine             → State transitions table
+```
+
+These aren't hard rules — they're guidelines the AI applies with **judgment based on your actual code.**
+
+### Bug Discovery (Bonus)
+
+While writing tests, test-audit often discovers bugs in the code being tested:
+
+| Bug Found | Root Cause | How test-audit caught it |
+|-----------|-----------|------------------------|
+| Route 422 on valid endpoint | Fixed path matched by `{param}` route | Test got unexpected 422 → investigated route ordering |
+| `no such table` | Table only in migration, not schema init | Test DB creation failed → checked `_ensure_schema` |
+| `no such column` | Column not in schema init | Test assertion failed → checked `_ensure_table_columns` |
+
+When one bug is found, it scans for similar issues (one discovery, batch investigation).
+
+### The 2-Retry Rule
 
 Most AI agents keep retrying failing tests with minor variations. Test-audit enforces a strict limit:
 
 ```
 1st failure → Read error, locate cause, fix
 2nd failure → STOP. Re-understand the problem.
-              Is it the test infrastructure? → Re-read conftest
-              Is it a production code bug?   → Record it, move on
+              Test infrastructure misunderstood? → Re-read conftest
+              Production code has a bug?         → Record it, move on
 ```
 
-**Same error twice means your mental model is wrong** — not that you need another try.
-
-### Bug Discovery (Bonus Feature)
-
-Test-audit doesn't just add tests. In practice, it finds real bugs:
-
-| Bug Found | Root Cause | Detection Method |
-|-----------|-----------|-----------------|
-| Route 422 on valid endpoint | Fixed path matched by `{param}` route | Test got unexpected 422 → checked route ordering |
-| `no such table` | Table only in migration, not in schema init | Test DB creation failed → checked `_ensure_schema` |
-| `no such column` | Query referenced column not in schema init | Test assertion failed → checked `_ensure_table_columns` |
-
-When one bug is found, test-audit scans for similar issues (one discovery, batch investigation).
-
-### Judgment Over Rules
-
-The skill doesn't apply a rigid checklist. It reads your code and makes three judgments:
-
-1. **Is this file worth testing?** — Type definitions → skip. API endpoints → test thoroughly.
-2. **What type of test?** — Unit, integration, API-level — whichever is most effective.
-3. **How deep?** — Auth code → per-path. Helper function → happy path + one edge case.
+**Same error twice = your mental model is wrong** — not that you need another try.
 
 ## 🌐 Cross-Agent Compatibility
 
-While designed for Claude Code, the instructions are agent-agnostic:
+While designed for Claude Code, the skill's instructions are agent-agnostic:
 
 | Agent | How to Use |
 |-------|-----------|
@@ -164,12 +218,19 @@ While designed for Claude Code, the instructions are agent-agnostic:
 
 From 7 rounds of test-audit on a production FastAPI + React project:
 
-- **35 new tests** added across 3 test files
-- **3 real bugs found** in production code (not test bugs)
+- **3 files correctly skipped** (type definitions, CSS, constants) — not everything needs tests
+- **35 new tests** added across 3 test files — right depth for each file's risk level
+- **3 real bugs found** in production code — test-audit caught what the developer missed
 - **0 false positives** — every finding was a real issue
-- Refined the skill's "Common Pitfall Patterns" table based on real failures
+- Skill's pitfall patterns refined from these real failures
 
 ## ❓ FAQ
+
+<details>
+<summary>Q: I'm a senior developer. Do I need this?</summary>
+
+Maybe not for judgment — you already know what to test. But you might still find value in: (1) the automated diff scanning, (2) bug discovery during test writing, and (3) the convergence discipline that prevents AI agents from infinite retry loops.
+</details>
 
 <details>
 <summary>Q: Does it work with my test framework?</summary>
@@ -186,13 +247,13 @@ test-audit will automatically set up the test infrastructure — install depende
 <details>
 <summary>Q: How is this different from Copilot's "generate tests"?</summary>
 
-Copilot generates tests for the file you have open. test-audit scans your entire diff, prioritizes by risk, reuses your project's patterns, and enforces a convergence discipline (stop retrying, start understanding). It also finds bugs in production code, not just coverage gaps.
+Copilot generates tests for the file you have open. You chose the file. You decided it needs tests. test-audit scans your entire diff, decides which files matter, and determines the right depth — then writes the tests. It's the difference between having a typist and having a test architect.
 </details>
 
 <details>
 <summary>Q: Can I use it with non-Python projects?</summary>
 
-Yes. The workflow (locate changes → understand test patterns → write tests → run → report) is language-agnostic. The "Common Pitfall Patterns" table covers general patterns (route ordering, schema mismatches, bracket errors) that apply across frameworks.
+Yes. The judgment engine (is it worth testing, what type, how deep) is language-agnostic. The workflow adapts to any test framework.
 </details>
 
 ## 🤝 Contributing
@@ -206,5 +267,5 @@ Contributions welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 ---
 
 <div align="center">
-<sub>Built with 🧪 by <a href="https://github.com/gtskevin">@gtskevin</a> — Test more, debug less.</sub>
+<sub>Built with 🧪 by <a href="https://github.com/gtskevin">@gtskevin</a> — Test judgment for everyone.</sub>
 </div>
