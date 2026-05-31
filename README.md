@@ -53,22 +53,39 @@ Test-audit encodes this judgment.
 
 ## Installation
 
-⏱️ **Get started in 30 seconds**
+> [!TIP]
+> **The easiest way: just tell your AI agent to install it.**
+>
+> Open your agent and say:
+> ```
+> Install the test-audit skill from https://github.com/gtskevin/test-audit
+> ```
+> Your agent will handle the rest — clone the repo and put the file in the right place.
 
+<details>
+<summary>Manual installation (if you prefer terminal)</summary>
+
+**Claude Code:**
 ```bash
-# Clone and install (it's a single file)
-git clone https://github.com/gtskevin/test-audit.git
 mkdir -p ~/.claude/skills/test-audit
-cp test-audit/skill.md ~/.claude/skills/test-audit/skill.md
+curl -sL https://raw.githubusercontent.com/gtskevin/test-audit/main/skill.md -o ~/.claude/skills/test-audit/skill.md
 ```
 
-That's it. Now open Claude Code in any project and type `/test-audit`.
+**Codex CLI:**
+```bash
+mkdir -p ~/.codex/skills/test-audit
+curl -sL https://raw.githubusercontent.com/gtskevin/test-audit/main/skill.md -o ~/.codex/skills/test-audit/SKILL.md
+```
+
+**Gemini CLI / Cursor / Windsurf:** Copy the [skill.md](skill.md) content into your agent's instruction file (`GEMINI.md`, `.cursor/rules/test-audit.mdc`, or `.windsurfrules`).
+
+</details>
 
 ## Quick Start
 
 1. Install the skill (above)
-2. Open Claude Code in any project with code changes
-3. Type: `/test-audit`
+2. Open your agent in any project with code changes
+3. Say `test-audit` (or `/test-audit` in Claude Code)
 4. Watch the output:
 
 ```
@@ -84,14 +101,14 @@ That's it. Now open Claude Code in any project and type `/test-audit`.
 
 ## Example Prompts
 
-Once installed, just type `/test-audit` in your agent. Here are real scenarios where it shines:
+Once installed, trigger it in your agent. Here are real scenarios:
 
-| Scenario | What to type | What happens |
-|----------|-------------|-------------|
-| After AI writes a feature | `/test-audit` | Scans the diff, tests only what changed |
-| Before committing | `/test-audit` | Safety net — catches untested changes |
-| After a big refactor | `/test-audit` | Re-evaluates which tests need updating |
-| "I just don't know what to test" | `/test-audit` | Makes all test decisions for you |
+| Scenario | What to say | What happens |
+|----------|------------|-------------|
+| After AI writes a feature | `test-audit` | Scans the diff, tests only what changed |
+| Before committing | `test-audit` | Safety net — catches untested changes |
+| After a big refactor | `test-audit` | Re-evaluates which tests need updating |
+| "I just don't know what to test" | `test-audit` | Makes all test decisions for you |
 
 > [!TIP]
 > Test-audit works best right after code changes, before committing. It reads `git diff` to find exactly what changed.
@@ -200,14 +217,18 @@ Test-audit makes **qualitative** judgments, not just quantitative.
 
 ## Cross-Agent Compatibility
 
-While designed for Claude Code, the skill's instructions are agent-agnostic:
+The core skill — judgment about what to test, workflow, and pitfall patterns — is **agent-agnostic**. It works with any AI coding agent that can read instructions, run shell commands, and edit files.
 
-| Agent | How to Use |
-|-------|-----------|
-| **Claude Code** | `mkdir -p ~/.claude/skills/test-audit && cp skill.md ~/.claude/skills/test-audit/skill.md` |
-| **Codex** | Copy skill content into `AGENTS.md` as a workflow instruction |
-| **Gemini CLI** | Copy into `GEMINI.md` as an available skill definition |
-| **Cursor / Windsurf** | Copy into `.cursorrules` or `.windsurfrules` |
+| Agent | How to Install | How to Trigger | Notes |
+|-------|---------------|----------------|-------|
+| **Claude Code** | `~/.claude/skills/test-audit/skill.md` | `/test-audit` | Native skill system. Best experience. |
+| **Codex CLI** | `~/.codex/skills/test-audit/SKILL.md` | "run test-audit" | Native skill system. Full compatibility. |
+| **Gemini CLI** | Paste into `GEMINI.md` | "run test-audit" | No skill system, paste as instructions. |
+| **Cursor** | `.cursor/rules/test-audit.mdc` | Auto or `@test-audit` | Use rule activation. Works with `.mdc` frontmatter. |
+| **Windsurf** | Paste into `.windsurfrules` | Manual trigger | No skill system. 12K char limit — trim if needed. |
+
+> [!NOTE]
+> **What's agent-specific?** Very little. The skill references in the "Compatibility with Other Skills" section (e.g., `everything-claude-code:browser-qa`) are Claude Code specific, but the skill automatically adapts its instructions — it tells your agent to use whatever browser/E2E/security tools are available to it.
 
 ## Real Results
 

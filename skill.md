@@ -2,6 +2,9 @@
 name: test-audit
 description: Autonomous test auditor. After code is written, analyzes changes, decides what tests are needed, writes and runs them, reports results. No user input required. Use when finishing a feature, after code generation, before committing, or when the user says "check tests", "add tests", "test audit", "test check".
 user-invocable: true
+agents:
+  claude-code: skill.md → ~/.claude/skills/test-audit/
+  codex: SKILL.md → ~/.codex/skills/test-audit/
 ---
 
 # Test Audit — Autonomous Test Expert
@@ -65,7 +68,7 @@ If the project has no test infrastructure, set it up automatically (install depe
 
 **Don't separate "decision" and "execution."** After analyzing, write tests directly — don't present an analysis report and wait for confirmation.
 
-**For large changes (5+ files), use Agent tool to divide and conquer:** Dispatch test generation to sub-agents to avoid consuming the main context window.
+**For large changes (5+ files), divide and conquer:** If your agent supports sub-agent dispatch (Claude Code: Agent tool; Codex: parallel tasks), use it to avoid consuming the main context window.
 
 **Test code principles:**
 - Use the project's existing framework and style, **reuse conftest helpers**
@@ -105,16 +108,16 @@ If bugs found → List each bug's location, issue, and suggestion.
 
 ## Compatibility with Other Skills
 
-When encountering these scenarios, **call specialized skills instead of writing yourself:**
+When encountering these scenarios, **delegate to specialized tools instead of writing yourself:**
 
-- Need browser end-to-end testing → `everything-claude-code:browser-qa`
-- Need E2E testing → `everything-claude-code:e2e-testing`
-- Need security review → `security-review`
+- Need browser end-to-end testing → Use your agent's browser testing capability (Claude Code: `everything-claude-code:browser-qa`; Codex: browser tool)
+- Need E2E testing → Use your agent's E2E framework (Claude Code: `everything-claude-code:e2e-testing`; others: Playwright/Cypress integration)
+- Need security review → Use your agent's security review skill (Claude Code: `security-review`; others: SAST tools)
 
 Natural companions (no need to actively call, but complementary):
-- `/commit` — Naturally follows after test-audit passes
-- `/code-review` — Review quality first, then test-audit for coverage
-- `/deploy` — test-audit passing is a prerequisite
+- Commit workflow — Naturally follows after test-audit passes
+- Code review — Review quality first, then test-audit for coverage
+- Deploy — test-audit passing is a prerequisite
 
 ## Absolute Don'ts
 
