@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="220" viewBox="0 0 800 220">
+  <defs>
+    <style>
+      @media (prefers-color-scheme: dark) {
+        .banner-bg { fill: #0f172a; }
+        .banner-title { fill: #f1f5f9; }
+        .banner-sub { fill: #94a3b8; }
+        .banner-bar { fill: #3b82f6; }
+        .banner-accent { fill: #10b981; }
+        .banner-line { stroke: #f59e0b; }
+        .banner-line-dot { fill: #f59e0b; }
+        .pill-dark { fill: #1e293b; }
+        .pill-green-bg { fill: #064e3b; }
+        .pill-yellow-bg { fill: #451a03; }
+      }
+    </style>
+  </defs>
+  <rect class="banner-bg" width="800" height="220" rx="16" fill="#f8fafc"/>
+  <rect x="60" y="80" width="16" height="70" rx="4" class="banner-bar" fill="#3b82f6" opacity="0.9"/>
+  <rect x="86" y="100" width="16" height="50" rx="4" class="banner-bar" fill="#3b82f6" opacity="0.7"/>
+  <rect x="112" y="65" width="16" height="85" rx="4" class="banner-bar" fill="#3b82f6" opacity="0.85"/>
+  <rect x="138" y="90" width="16" height="60" rx="4" class="banner-accent" fill="#10b981" opacity="0.9"/>
+  <path d="M65 100 L91 105 L117 80 L143 95" stroke="#f59e0b" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" class="banner-line"/>
+  <circle cx="143" cy="95" r="4" class="banner-line-dot" fill="#f59e0b"/>
+  <text x="200" y="95" font-family="system-ui, -apple-system, sans-serif" font-size="42" font-weight="bold" class="banner-title" fill="#0f172a">Test Audit</text>
+  <text x="200" y="130" font-family="system-ui, -apple-system, sans-serif" font-size="18" class="banner-sub" fill="#64748b">The test judgment a senior developer has — available to everyone.</text>
+  <rect x="200" y="148" width="120" height="30" rx="15" fill="#1e293b" class="pill-dark"/>
+  <text x="260" y="168" text-anchor="middle" font-family="monospace" font-size="14" fill="#60a5fa">/test-audit</text>
+  <rect x="335" y="148" width="130" height="30" rx="15" fill="#ecfdf5" class="pill-green-bg"/>
+  <text x="400" y="168" text-anchor="middle" font-family="system-ui" font-size="13" fill="#059669">Zero interaction</text>
+  <rect x="480" y="148" width="110" height="30" rx="15" fill="#fffbeb" class="pill-yellow-bg"/>
+  <text x="535" y="168" text-anchor="middle" font-family="system-ui" font-size="13" fill="#d97706">Finds bugs</text>
+</svg>

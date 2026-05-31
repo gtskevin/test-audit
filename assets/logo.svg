@@ -2,18 +2,22 @@
   <defs>
     <style>
       @media (prefers-color-scheme: dark) {
-        .bg { fill: #1a1a2e; }
-        .primary { fill: #60a5fa; }
-        .accent { fill: #34d399; }
-        .text { fill: #e2e8f0; }
+        .logo-bg { fill: #1e293b; }
+        .bar-a { fill: #60a5fa; }
+        .bar-b { fill: #60a5fa; opacity: 0.7; }
+        .bar-c { fill: #60a5fa; opacity: 0.85; }
+        .bar-pass { fill: #34d399; }
+        .trend { stroke: #fbbf24; }
+        .dot { fill: #fbbf24; }
       }
     </style>
   </defs>
-  <rect class="bg" width="120" height="120" rx="24" fill="#f8fafc"/>
-  <rect x="25" y="30" width="14" height="60" rx="3" class="primary" fill="#3b82f6"/>
-  <rect x="45" y="45" width="14" height="45" rx="3" class="primary" fill="#3b82f6"/>
-  <rect x="65" y="20" width="14" height="70" rx="3" class="primary" fill="#3b82f6"/>
-  <rect x="85" y="38" width="14" height="52" rx="3" class="accent" fill="#10b981"/>
-  <path d="M30 55 L52 55 L72 35 L92 50" stroke="#f59e0b" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="92" cy="50" r="4" fill="#f59e0b"/>
+  <rect class="logo-bg" width="120" height="120" rx="24" fill="#f0f9ff"/>
+  <rect x="22" y="55" width="14" height="40" rx="3" class="bar-a" fill="#3b82f6"/>
+  <rect x="42" y="42" width="14" height="53" rx="3" class="bar-b" fill="#3b82f6" opacity="0.7"/>
+  <rect x="62" y="30" width="14" height="65" rx="3" class="bar-c" fill="#3b82f6" opacity="0.85"/>
+  <rect x="82" y="48" width="14" height="47" rx="3" class="bar-pass" fill="#10b981"/>
+  <path d="M86 68 L89 72 L96 63" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M28 60 L48 48 L68 35 L88 52" stroke="#f59e0b" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="trend"/>
+  <circle cx="88" cy="52" r="3.5" class="dot" fill="#f59e0b"/>
 </svg>

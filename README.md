@@ -1,14 +1,16 @@
 <div align="center">
 
-# Test Audit
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/banner.svg">
+  <img src="assets/banner.svg" alt="Test Audit — Autonomous test judgment for AI coding agents" width="800">
+</picture>
 
-**You don't know what to test. This skill does.**
+<br/>
 
-The test judgment a senior developer has — available to everyone.
-
-[![Claude Code Skill](https://img.shields.io/badge/Claude%20Code-Skill-blue?logo=anthropic)]()
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)]()
-[![GitHub Stars](https://img.shields.io/github/stars/gtskevin/test-audit?style=social&logo=github)](https://github.com/gtskevin/test-audit)
+[![GitHub Stars](https://img.shields.io/github/stars/gtskevin/test-audit?style=for-the-badge&logo=github&color=f59e0b&label=%E2%AD%90%20Stars)](https://github.com/gtskevin/test-audit)
+[![Claude Code Skill](https://img.shields.io/badge/Claude%20Code-Skill-blue?style=for-the-badge&logo=anthropic)]()
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)]()
+[![Agent Agnostic](https://img.shields.io/badge/Works%20with-Any%20Agent-9333ea?style=for-the-badge)]()
 
 </div>
 
@@ -16,6 +18,15 @@ The test judgment a senior developer has — available to everyone.
 
 > [!NOTE]
 > **Who is this for?** You build things with AI coding agents. You're not sure when code needs tests, what kind of tests, or how many. Test-audit makes those decisions for you — then writes and runs the tests.
+
+## Highlights
+
+| | Feature | Why it matters |
+|---|---------|---------------|
+| 🧠 | **Makes test decisions for you** | Reads your diff, decides which files need tests, what type, and how deep. Zero input required. |
+| 🐛 | **Finds real bugs, not just coverage gaps** | Found 3 production bugs in its first project (route ordering, missing table, missing column). |
+| 🔧 | **Respects your project** | Reads your conftest, reuses your helpers, follows your patterns. Never introduces new dependencies. |
+| 🎯 | **Converges, doesn't retry** | 2-retry limit forces understanding over blind repetition. |
 
 ## The Gap This Fills
 
@@ -40,38 +51,25 @@ A senior developer looks at your diff and thinks:
 Test-audit encodes this judgment.
 ```
 
-## ✨ Highlights
+## Installation
 
-- **Makes test decisions for you** — Reads your diff, decides which files need tests, what type, and how deep. Zero input required.
-- **Finds real bugs, not just coverage gaps** — Found 3 production bugs in its first project (route ordering, missing table, missing column).
-- **Respects your project** — Reads your conftest, reuses your helpers, follows your patterns. Never introduces new dependencies.
-- **Converges, doesn't retry** — 2-retry limit forces understanding over blind repetition.
-
-## 🎯 Who Uses This
-
-**The vibe coder** — You build with AI agents but aren't a professional developer. You don't have the "test intuition" that comes from years of shipping. Test-audit gives you that intuition.
-
-**The solo developer shipping fast** — You know testing matters but don't have time to think about coverage strategy. Run `/test-audit` before each commit as a safety net.
-
-**The team lead reviewing PRs** — Use test-audit to quickly assess whether a PR has adequate test coverage without reading every line.
-
-## 📦 Installation
-
-⏱️ Get started in 30 seconds
+⏱️ **Get started in 30 seconds**
 
 ```bash
-# Clone and install (one file)
+# Clone and install (it's a single file)
 git clone https://github.com/gtskevin/test-audit.git
 mkdir -p ~/.claude/skills/test-audit
 cp test-audit/skill.md ~/.claude/skills/test-audit/skill.md
 ```
 
-## ⚡ Quick Start
+That's it. Now open Claude Code in any project and type `/test-audit`.
+
+## Quick Start
 
 1. Install the skill (above)
 2. Open Claude Code in any project with code changes
 3. Type: `/test-audit`
-4. Expected output:
+4. Watch the output:
 
 ```
 📁 Files reviewed: 5
@@ -84,68 +82,36 @@ cp test-audit/skill.md ~/.claude/skills/test-audit/skill.md
 → Can commit? Fix the bugs first, then YES
 ```
 
-## 🆚 How It's Different
+## Example Prompts
 
-### vs. TDD Skills
+Once installed, just type `/test-audit` in your agent. Here are real scenarios where it shines:
 
-TDD says "write the test first." But **which test?** Testing an auth route needs per-path coverage. Testing a helper function needs one happy path. How do you know? Experience.
+| Scenario | What to type | What happens |
+|----------|-------------|-------------|
+| After AI writes a feature | `/test-audit` | Scans the diff, tests only what changed |
+| Before committing | `/test-audit` | Safety net — catches untested changes |
+| After a big refactor | `/test-audit` | Re-evaluates which tests need updating |
+| "I just don't know what to test" | `/test-audit` | Makes all test decisions for you |
 
-Test-audit **has that experience built in.** It reads the code and makes the judgment call — so you don't need years of practice to know what "good testing" looks like.
+> [!TIP]
+> Test-audit works best right after code changes, before committing. It reads `git diff` to find exactly what changed.
 
-### vs. "Write tests for X"
-
-When you say "write tests for auth.py," you've already made the decision that auth.py needs tests. But what if the real risk is in a helper that auth.py calls? Or what if auth.py already has great coverage, but a new migration file broke the schema?
-
-Test-audit scans **your entire diff**, not just one file you pointed at.
-
-### vs. Coverage Reports
-
-Coverage says "87% of lines are executed." It doesn't tell you:
-- Whether the 13% gap matters
-- Whether the 87% tests are actually asserting anything meaningful
-- Whether a file with 100% coverage is testing the right things
-
-Test-audit makes **qualitative** judgments, not just quantitative.
-
-## 📖 How It Works
+## How It Works
 
 <div align="center">
 
-```
-  You run /test-audit
-          │
-          ▼
-  ┌─────────────────────────────┐
-  │  Step 1: Locate Changes     │  git diff — what changed?
-  └─────────────┬───────────────┘
-                ▼
-  ┌─────────────────────────────┐
-  │  Step 2: Judge Each File    │  ← The core value
-  │                             │
-  │  Worth testing? → Skip or   │
-  │  What type?      → Decide   │
-  │  How deep?       → Commit   │
-  └─────────────┬───────────────┘
-                ▼
-  ┌─────────────────────────────┐
-  │  Step 3: Read the Room      │  conftest, existing tests, DB patterns
-  │                             │  ⚡ Prevents 80% of environment failures
-  └─────────────┬───────────────┘
-                ▼
-  ┌─────────────────────────────┐
-  │  Step 4: Write & Run Tests  │  Reuse project patterns & helpers
-  └─────────────┬───────────────┘
-                ▼
-  ┌─────────────────────────────┐
-  │  Step 5: Converge           │  Max 2 retries per file.
-  │                             │  Same error twice? Re-understand.
-  │                             │  Bug found? Record + scan for similar.
-  └─────────────┬───────────────┘
-                ▼
-  ┌─────────────────────────────┐
-  │  ✅ Can I commit?           │
-  │  Judgment + Results + Bugs  │
-  └─────────────────────────────┘
+```mermaid
+flowchart TD
+    A["/test-audit"] --> B["Locate Changes<br/>git diff"]
+    B --> C["Judge Each File<br/>Skip? Unit? Integration? Deep?"]
+    C --> D["Read the Room<br/>conftest, patterns, DB setup"]
+    D --> E["Write Tests<br/>Reuse project helpers"]
+    E --> F["Run & Converge<br/>Max 2 retries"]
+    F --> G{Bug found?}
+    G -->|Yes| H["Record + Scan for similar"]
+    G -->|No| I["Report Results"]
+    H --> I
+    I --> J["Can I commit? ✅"]
 ```
 
 </div>
@@ -178,7 +144,7 @@ Complex state machine             → State transitions table
 
 These aren't hard rules — they're guidelines the AI applies with **judgment based on your actual code.**
 
-### Bug Discovery (Bonus)
+### Bug Discovery
 
 While writing tests, test-audit often discovers bugs in the code being tested:
 
@@ -192,8 +158,6 @@ When one bug is found, it scans for similar issues (one discovery, batch investi
 
 ### The 2-Retry Rule
 
-Most AI agents keep retrying failing tests with minor variations. Test-audit enforces a strict limit:
-
 ```
 1st failure → Read error, locate cause, fix
 2nd failure → STOP. Re-understand the problem.
@@ -203,7 +167,38 @@ Most AI agents keep retrying failing tests with minor variations. Test-audit enf
 
 **Same error twice = your mental model is wrong** — not that you need another try.
 
-## 🌐 Cross-Agent Compatibility
+## Who Uses This
+
+**The vibe coder** — You build with AI agents but aren't a professional developer. You don't have the "test intuition" that comes from years of shipping. Test-audit gives you that intuition.
+
+**The solo developer shipping fast** — You know testing matters but don't have time to think about coverage strategy. Run `/test-audit` before each commit as a safety net.
+
+**The team lead reviewing PRs** — Use test-audit to quickly assess whether a PR has adequate test coverage without reading every line.
+
+## How It's Different
+
+### vs. TDD Skills
+
+TDD says "write the test first." But **which test?** Testing an auth route needs per-path coverage. Testing a helper function needs one happy path. How do you know? Experience.
+
+Test-audit **has that experience built in.** It reads the code and makes the judgment call — so you don't need years of practice to know what "good testing" looks like.
+
+### vs. "Write tests for X"
+
+When you say "write tests for auth.py," you've already made the decision that auth.py needs tests. But what if the real risk is in a helper that auth.py calls? Or what if auth.py already has great coverage, but a new migration file broke the schema?
+
+Test-audit scans **your entire diff**, not just one file you pointed at.
+
+### vs. Coverage Reports
+
+Coverage says "87% of lines are executed." It doesn't tell you:
+- Whether the 13% gap matters
+- Whether the 87% tests are actually asserting anything meaningful
+- Whether a file with 100% coverage is testing the right things
+
+Test-audit makes **qualitative** judgments, not just quantitative.
+
+## Cross-Agent Compatibility
 
 While designed for Claude Code, the skill's instructions are agent-agnostic:
 
@@ -214,55 +209,62 @@ While designed for Claude Code, the skill's instructions are agent-agnostic:
 | **Gemini CLI** | Copy into `GEMINI.md` as an available skill definition |
 | **Cursor / Windsurf** | Copy into `.cursorrules` or `.windsurfrules` |
 
-## 📊 Real Results
+## Real Results
 
 From 7 rounds of test-audit on a production FastAPI + React project:
 
-- **3 files correctly skipped** (type definitions, CSS, constants) — not everything needs tests
-- **35 new tests** added across 3 test files — right depth for each file's risk level
-- **3 real bugs found** in production code — test-audit caught what the developer missed
-- **0 false positives** — every finding was a real issue
-- Skill's pitfall patterns refined from these real failures
+| Metric | Result |
+|--------|--------|
+| Files correctly skipped | 3 (type definitions, CSS, constants) |
+| New tests added | 35 across 3 test files |
+| Production bugs found | 3 (route ordering, missing table, missing column) |
+| False positives | 0 — every finding was a real issue |
 
-## ❓ FAQ
+## FAQ
 
 <details>
-<summary>Q: I'm a senior developer. Do I need this?</summary>
+<summary>I'm a senior developer. Do I need this?</summary>
 
 Maybe not for judgment — you already know what to test. But you might still find value in: (1) the automated diff scanning, (2) bug discovery during test writing, and (3) the convergence discipline that prevents AI agents from infinite retry loops.
 </details>
 
 <details>
-<summary>Q: Does it work with my test framework?</summary>
+<summary>Does it work with my test framework?</summary>
 
-Yes. test-audit reads your existing test files and conftest to understand your framework (pytest, vitest, jest, Go testing, etc.) before writing any tests. It adapts to whatever you're using.
+Yes. Test-audit reads your existing test files and conftest to understand your framework (pytest, vitest, jest, Go testing, etc.) before writing any tests. It adapts to whatever you're using.
 </details>
 
 <details>
-<summary>Q: What if my project has no tests at all?</summary>
+<summary>What if my project has no tests at all?</summary>
 
-test-audit will automatically set up the test infrastructure — install dependencies, create configuration, and verify the environment — before writing the first test. No manual setup needed.
+Test-audit will automatically set up the test infrastructure — install dependencies, create configuration, and verify the environment — before writing the first test. No manual setup needed.
 </details>
 
 <details>
-<summary>Q: How is this different from Copilot's "generate tests"?</summary>
+<summary>How is this different from Copilot's "generate tests"?</summary>
 
-Copilot generates tests for the file you have open. You chose the file. You decided it needs tests. test-audit scans your entire diff, decides which files matter, and determines the right depth — then writes the tests. It's the difference between having a typist and having a test architect.
+Copilot generates tests for the file you have open. You chose the file. You decided it needs tests. Test-audit scans your entire diff, decides which files matter, and determines the right depth — then writes the tests. It's the difference between having a typist and having a test architect.
 </details>
 
 <details>
-<summary>Q: Can I use it with non-Python projects?</summary>
+<summary>Can I use it with non-Python projects?</summary>
 
 Yes. The judgment engine (is it worth testing, what type, how deep) is language-agnostic. The workflow adapts to any test framework.
 </details>
 
-## 🤝 Contributing
+<details>
+<summary>What if the AI agent keeps retrying failing tests?</summary>
+
+Test-audit enforces a strict 2-retry limit. After two failures on the same test, it stops and re-evaluates the root cause — either the test infrastructure was misunderstood, or the production code has a bug. No infinite loops.
+</details>
+
+## Contributing
 
 Contributions welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
-## ⭐ Star History
+## Star History
 
-[![Star History](https://img.shields.io/github/stars/gtskevin/test-audit?style=for-the-badge&logo=github&color=f59e0b&label=%E2%AD%90%20Star%20History)](https://star-history.com/#gtskevin/test-audit&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=gtskevin/test-audit&type=Date)](https://star-history.com/#gtskevin/test-audit&Date)
 
 ---
 
